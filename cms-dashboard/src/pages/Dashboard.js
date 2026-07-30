@@ -1,23 +1,17 @@
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../utils/AuthContext';
+import Sidebar from '../components/Sidebar';
+import TopBar from '../components/TopBar';
 import './Dashboard.css';
 
 const Dashboard = () => {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-  };
-
   return (
-    <div className="dashboard-wrapper">
-      <h1 className="dashboard-title">Welcome, {user?.display_name} 👋</h1>
-      <p className="dashboard-role">Role: {user?.role}</p>
-      <button className="dashboard-logout-btn" onClick={handleLogout}>
-        Logout
-      </button>
+    <div className="layout">
+      <Sidebar />
+      <div className="layout-main">
+        <TopBar title="Dashboard" />
+        <div className="layout-content">
+          <p className="dashboard-empty">Dashboard content coming soon.</p>
+        </div>
+      </div>
     </div>
   );
 };

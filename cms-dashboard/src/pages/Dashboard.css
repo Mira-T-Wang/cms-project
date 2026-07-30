@@ -1,35 +1,24 @@
-.dashboard-wrapper {
+.layout {
+  display: flex;
   background-color: #0a0f1e;
   min-height: 100vh;
-  color: #ffffff;
-  padding: 40px;
   font-family: 'Segoe UI', sans-serif;
 }
 
-.dashboard-title {
-  font-size: 28px;
-  font-weight: bold;
-  margin-bottom: 8px;
+.layout-main {
+  margin-left: 220px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-.dashboard-role {
-  color: #7a9cc6;
-  font-size: 14px;
-  margin-bottom: 24px;
-}
-
-.dashboard-logout-btn {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: #1a6ef5;
+.layout-content {
+  margin-top: 56px;
+  padding: 32px 40px;
   color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.2s;
 }
 
-.dashboard-logout-btn:hover {
-  background-color: #1558cc;
+.dashboard-empty {
+  color: #7a9cc6;
+  font-size: 15px;
 }

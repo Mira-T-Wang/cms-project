@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { authAPI } from '../api/apiService';
 import { useAuth } from '../utils/AuthContext';
 import { FaEye, FaEyeSlash, FaUser, FaLock } from 'react-icons/fa';
-import logo from '../assets/logo.png';
+import logo from '../assets/image.png';
 import './Login.css';
 
 const Login = () => {
