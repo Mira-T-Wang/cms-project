@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import TopBar from '../components/TopBar';
-import apiClient from '../api/apiService';
+import SalesModal from '../components/SalesModal';
+import { salesAPI } from '../api/apiService';
 import './Statistics.css';
 
 const Statistics = () => {
@@ -11,23 +12,71 @@ const Statistics = () => {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const res = await apiClient.get(`/sales?page=${page}&limit=20`);
-        setData(res.data.data);
-        setTotalPages(res.data.totalPages);
-        setTotal(res.data.total);
-      } catch (error) {
-        console.error('Failed to fetch sales data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // Modal state
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState('add');
+  const [selectedRow, setSelectedRow] = useState(null);
 
-    fetchData();
+  // Delete confirm state
+  const [deleteTarget, setDeleteTarget] = useState(null);
+
+  const fetchData = async (currentPage) => {
+    setLoading(true);
+    try {
+      const res = await salesAPI.getPaginated(currentPage);
+      setData(res.data.data);
+      setTotalPages(res.data.totalPages);
+      setTotal(res.data.total);
+    } catch (error) {
+      console.error('Failed to fetch sales data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData(page);
   }, [page]);
+
+  const handleAdd = () => {
+    setModalMode('add');
+    setSelectedRow(null);
+    setModalOpen(true);
+  };
+
+  const handleEdit = (row) => {
+    setModalMode('edit');
+    setSelectedRow(row);
+    setModalOpen(true);
+  };
+
+  const handleSave = async (form) => {
+    try {
+      if (modalMode === 'add') {
+        await salesAPI.create(form);
+      } else {
+        await salesAPI.update(selectedRow.id, form);
+      }
+      setModalOpen(false);
+      fetchData(page);
+    } catch (error) {
+      console.error('Save failed:', error);
+    }
+  };
+
+  const handleDeleteConfirm = (row) => {
+    setDeleteTarget(row);
+  };
+
+  const handleDelete = async () => {
+    try {
+      await salesAPI.delete(deleteTarget.id);
+      setDeleteTarget(null);
+      fetchData(page);
+    } catch (error) {
+      console.error('Delete failed:', error);
+    }
+  };
 
   return (
     <div className="layout">
@@ -36,15 +85,18 @@ const Statistics = () => {
         <TopBar title="Statistics" />
         <div className="layout-content">
 
+          {/* Header */}
           <div className="stats-header">
-            <span className="stats-total">Total Records: {total}</span>
-            <span className="stats-page">Page {page} of {totalPages}</span>
+            <button className="stats-add-btn" onClick={handleAdd}>
+              + Add
+            </button>
           </div>
 
           {loading ? (
             <div className="stats-loading">Loading...</div>
           ) : (
             <>
+              {/* Table */}
               <div className="stats-table-wrapper">
                 <table className="stats-table">
                   <thead>
@@ -59,12 +111,13 @@ const Statistics = () => {
                       <th>Mytel</th>
                       <th>DTAC</th>
                       <th>KBZPay</th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {data.map((row) => (
                       <tr key={row.id}>
-                        <td>{row.date.slice(0, 10)}</td>
+                        <td>{row.date}</td>
                         <td>{row.total}</td>
                         <td>{row.mpt}</td>
                         <td>{row.ooredoo}</td>
@@ -74,12 +127,27 @@ const Statistics = () => {
                         <td>{row.mytel}</td>
                         <td>{row.dtac}</td>
                         <td>{row.kbzpay}</td>
+                        <td className="actions-cell">
+                          <button
+                            className="btn-edit"
+                            onClick={() => handleEdit(row)}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="btn-delete"
+                            onClick={() => handleDeleteConfirm(row)}
+                          >
+                            Delete
+                          </button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
 
+              {/* Pagination */}
               <div className="stats-pagination">
                 <button
                   className="pagination-btn"
@@ -88,11 +156,9 @@ const Statistics = () => {
                 >
                   ← Previous
                 </button>
-
                 <span className="pagination-info">
                   Page {page} of {totalPages}
                 </span>
-
                 <button
                   className="pagination-btn"
                   onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
@@ -101,10 +167,51 @@ const Statistics = () => {
                   Next →
                 </button>
               </div>
+
+              {/* Footer */}
+              <div className="stats-footer">
+                Total Records: {total}
+              </div>
             </>
           )}
         </div>
       </div>
+
+      {/* Add / Edit Modal */}
+      {modalOpen && (
+        <SalesModal
+          mode={modalMode}
+          initialData={selectedRow}
+          onSave={handleSave}
+          onClose={() => setModalOpen(false)}
+        />
+      )}
+
+      {/* Delete Confirmation Dialog */}
+      {deleteTarget && (
+        <div className="modal-overlay">
+          <div className="confirm-dialog">
+            <h3 className="confirm-title">Delete Record</h3>
+            <p className="confirm-message">
+              Are you sure you want to delete the record for <strong>{deleteTarget.date.slice(0, 10)}</strong>? This action cannot be undone.
+            </p>
+            <div className="confirm-actions">
+              <button
+                className="modal-btn-cancel"
+                onClick={() => setDeleteTarget(null)}
+              >
+                Cancel
+              </button>
+              <button
+                className="confirm-btn-delete"
+                onClick={handleDelete}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

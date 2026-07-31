@@ -11,5 +11,30 @@ const getPaginated = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+const create = async (req, res) => {
+  try {
+    const result = await SaleStatistics.create(req.body);
+    res.status(201).json({ message: 'Record created', id: result.insertId });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-module.exports = { getPaginated };
+const update = async (req, res) => {
+  try {
+    await SaleStatistics.update(req.params.id, req.body);
+    res.json({ message: 'Record updated' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const remove = async (req, res) => {
+  try {
+    await SaleStatistics.delete(req.params.id);
+    res.json({ message: 'Record deleted' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+module.exports = { getPaginated, create, update, remove };

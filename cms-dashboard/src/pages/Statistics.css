@@ -108,3 +108,211 @@
   min-width: 120px;
   text-align: center;
 }
+.stats-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #1e3a6e;
+}
+
+.stats-add-btn {
+  padding: 10px 20px;
+  background-color: #1a6ef5;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.stats-add-btn:hover {
+  background-color: #1558cc;
+}
+
+.stats-loading {
+  color: #7a9cc6;
+  font-size: 15px;
+  text-align: center;
+  padding: 40px;
+}
+
+.stats-table-wrapper {
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid #1e3a6e;
+}
+
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.stats-table thead tr {
+  background-color: #0d1b3e;
+}
+
+.stats-table th {
+  padding: 18px 20px;
+  text-align: left;
+  color: #4a90d9;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #1e3a6e;
+  white-space: nowrap;
+}
+
+.stats-table tbody tr {
+  border-bottom: 1px solid #1a2a4a;
+  transition: background-color 0.15s;
+}
+
+.stats-table tbody tr:hover {
+  background-color: #0d1b3e;
+}
+
+.stats-table td {
+  padding: 14px 20px;
+  color: #c8d8f0;
+}
+
+.stats-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.actions-cell {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-edit {
+  padding: 6px 14px;
+  background-color: #1a6ef5;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-edit:hover {
+  background-color: #1558cc;
+}
+
+.btn-delete {
+  padding: 6px 14px;
+  background-color: transparent;
+  color: #ff6b6b;
+  border: 1px solid #ff6b6b;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-delete:hover {
+  background-color: #ff6b6b;
+  color: #ffffff;
+}
+
+/* Pagination */
+.stats-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 28px;
+}
+
+.pagination-btn {
+  padding: 10px 24px;
+  background-color: #1a6ef5;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background-color: #1558cc;
+}
+
+.pagination-btn:disabled {
+  background-color: #1e3a6e;
+  color: #4a6a9e;
+  cursor: not-allowed;
+}
+
+.pagination-info {
+  color: #7a9cc6;
+  font-size: 14px;
+  min-width: 120px;
+  text-align: center;
+}
+
+/* Footer */
+.stats-footer {
+  text-align: center;
+  margin-top: 16px;
+  color: #7a9cc6;
+  font-size: 13px;
+  padding: 12px;
+  border-top: 1px solid #1e3a6e;
+}
+
+/* Confirm Dialog */
+.confirm-dialog {
+  background-color: #0d1b3e;
+  border: 1px solid #1e3a6e;
+  border-radius: 14px;
+  padding: 32px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.confirm-title {
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+}
+
+.confirm-message {
+  color: #7a9cc6;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.confirm-message strong {
+  color: #ffffff;
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.confirm-btn-delete {
+  padding: 10px 24px;
+  background-color: #ff6b6b;
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.confirm-btn-delete:hover {
+  background-color: #e05555;
+}

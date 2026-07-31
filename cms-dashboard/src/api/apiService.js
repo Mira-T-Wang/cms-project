@@ -20,4 +20,15 @@ export const authAPI = {
     apiClient.post('/auth/login', { username, password })
 };
 
+export const salesAPI = {
+  getPaginated: (page, limit = 20) =>
+    apiClient.get(`/sales?page=${page}&limit=${limit}`),
+  create: (data) =>
+    apiClient.post('/sales', data),
+  update: (id, data) =>
+    apiClient.put(`/sales/${id}`, data),
+  delete: (id) =>
+    apiClient.delete(`/sales/${id}`)
+};
+
 export default apiClient;
