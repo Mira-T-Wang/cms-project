@@ -13,6 +13,13 @@ const getPaginated = async (req, res) => {
 };
 const create = async (req, res) => {
   try {
+    const plainDate = req.body.date.split('T')[0];
+    
+    const exists = await SaleStatistics.dateExists(plainDate);
+    if (exists) {
+      return res.status(400).json({ error: `A record for ${plainDate} already exists.` });
+    }
+
     const result = await SaleStatistics.create(req.body);
     res.status(201).json({ message: 'Record created', id: result.insertId });
   } catch (error) {

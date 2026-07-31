@@ -6,7 +6,7 @@ const emptyForm = {
   telenor: '', mec: '', mytel: '', dtac: '', kbzpay: ''
 };
 
-const SalesModal = ({ mode, initialData, onSave, onClose }) => {
+const SalesModal = ({ mode, initialData, onSave, onClose, error }) => {
   const [form, setForm] = useState(emptyForm);
 
   useEffect(() => {
@@ -70,7 +70,7 @@ const SalesModal = ({ mode, initialData, onSave, onClose }) => {
             </div>
           ))}
         </div>
-
+        {error && <div className="modal-error">{error}</div>}
         <div className="modal-actions">
           <button className="modal-btn-cancel" onClick={onClose}>
             Cancel

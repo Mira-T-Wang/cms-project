@@ -50,8 +50,11 @@ const Statistics = () => {
     setModalOpen(true);
   };
 
+  const [saveError, setSaveError] = useState('');
+
   const handleSave = async (form) => {
     try {
+      setSaveError('');
       if (modalMode === 'add') {
         await salesAPI.create(form);
       } else {
@@ -60,7 +63,7 @@ const Statistics = () => {
       setModalOpen(false);
       fetchData(page);
     } catch (error) {
-      console.error('Save failed:', error);
+      setSaveError(error.response?.data?.error || 'Save failed (Duplicate dates). Please try again.');
     }
   };
 
@@ -179,12 +182,16 @@ const Statistics = () => {
 
       {/* Add / Edit Modal */}
       {modalOpen && (
-        <SalesModal
-          mode={modalMode}
-          initialData={selectedRow}
-          onSave={handleSave}
-          onClose={() => setModalOpen(false)}
-        />
+      <SalesModal
+       mode={modalMode}
+      initialData={selectedRow}
+      onSave={handleSave}
+      onClose={() => {
+      setModalOpen(false);
+      setSaveError('');
+      }}
+       error={saveError}
+       />
       )}
 
       {/* Delete Confirmation Dialog */}

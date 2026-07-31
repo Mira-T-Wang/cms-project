@@ -31,6 +31,17 @@ class SaleStatistics {
       totalPages: Math.ceil(count / limit)
     };
   }
+
+  static async dateExists(date) {
+  const connection = await pool.getConnection();
+  const [[{ count }]] = await connection.execute(
+    'SELECT COUNT(*) as count FROM sale_statistics WHERE date = ?',
+    [date]
+  );
+  connection.release();
+  return count > 0;
+}
+
   static async create(fields) {
     const connection = await pool.getConnection();
     const { date, total, mpt, ooredoo, ooredoo_codapay, telenor, mec, mytel, dtac, kbzpay } = fields;
