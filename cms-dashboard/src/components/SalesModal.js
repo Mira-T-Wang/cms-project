@@ -28,6 +28,20 @@ const SalesModal = ({ mode, initialData, onSave, onClose, error }) => {
     }
   }, [mode, initialData]);
 
+  useEffect(() => {
+  const sum =
+    Number(form.mpt) +
+    Number(form.ooredoo) +
+    Number(form.ooredoo_codapay) +
+    Number(form.telenor) +
+    Number(form.mec) +
+    Number(form.mytel) +
+    Number(form.dtac) +
+    Number(form.kbzpay);
+
+  setForm((prev) => ({ ...prev, total: sum }));
+}, [form.mpt, form.ooredoo, form.ooredoo_codapay, form.telenor, form.mec, form.mytel, form.dtac, form.kbzpay]);
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -38,7 +52,7 @@ const SalesModal = ({ mode, initialData, onSave, onClose, error }) => {
 
   const fields = [
     { name: 'date', label: 'Date', type: 'date' },
-    { name: 'total', label: 'Total', type: 'number' },
+    { name: 'total', label: 'Total', type: 'number', disabled: true },
     { name: 'mpt', label: 'MPT', type: 'number' },
     { name: 'ooredoo', label: 'Ooredoo', type: 'number' },
     { name: 'ooredoo_codapay', label: 'Ooredoo Codapay', type: 'number' },
@@ -66,6 +80,7 @@ const SalesModal = ({ mode, initialData, onSave, onClose, error }) => {
                 name={field.name}
                 value={form[field.name]}
                 onChange={handleChange}
+                disabled={field.disabled || false}
               />
             </div>
           ))}

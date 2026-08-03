@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 
 const login = async (req, res) => {
   try {
@@ -17,7 +18,14 @@ const login = async (req, res) => {
     }
 
     // Check password (bcrypt for newer users, md5 for old ones)
-    const isMatch = await bcrypt.compare(password, user.password);
+    let isMatch = false;
+    if (user.password.startsWith('$2')) {
+      isMatch = await bcrypt.compare(password, user.password);
+    } else {
+      const md5 = crypto.createHash('md5').update(password).digest('hex');
+      isMatch = md5 === user.password;
+    }
+
     if (!isMatch) {
       return res.status(401).json({ error: 'Invalid username or password' });
     }
