@@ -24,3 +24,15 @@ app.listen(PORT, () => {
   console.log(`\n Server running on http://localhost:${PORT}`);
   console.log(` Test it: http://localhost:${PORT}/api/test\n`);
 });
+const rateLimit = require('express-rate-limit');
+
+// Limit login attempts — 5 tries per 15 minutes
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: { error: 'Too many login attempts. Please try again after 15 minutes.' },
+  standardHeaders: true,
+  legacyHeaders: false
+});
+
+app.use('/api/auth/login', loginLimiter);

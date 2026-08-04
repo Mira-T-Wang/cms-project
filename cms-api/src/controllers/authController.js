@@ -17,18 +17,21 @@ const login = async (req, res) => {
       return res.status(401).json({ error: 'Invalid username or password' });
     }
 
-    // Check password (bcrypt for newer users, md5 for old ones)
-    let isMatch = false;
-    if (user.password.startsWith('$2')) {
-      isMatch = await bcrypt.compare(password, user.password);
-    } else {
-      const md5 = crypto.createHash('md5').update(password).digest('hex');
-      isMatch = md5 === user.password;
-    }
+    // Check password — bcrypt for new users, MD5 for legacy users
+let isMatch = false;
+if (user.password.startsWith('$2')) {
+  isMatch = await bcrypt.compare(password, user.password);
+} else {
+  const md5 = crypto.createHash('md5').update(password).digest('hex');
+  isMatch = md5 === user.password;
 
-    if (!isMatch) {
-      return res.status(401).json({ error: 'Invalid username or password' });
-    }
+  // Auto-upgrade MD5 to bcrypt on successful login
+  if (isMatch) {
+    const newHash = await bcrypt.hash(password, 10);
+    await User.updatePassword(user.idx, newHash);
+    console.log(`Password upgraded to bcrypt for user: ${user.username}`);
+  }
+}
 
     // Create JWT token
     const token = jwt.sign(
