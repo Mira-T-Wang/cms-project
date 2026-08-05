@@ -46,7 +46,13 @@ const SalesModal = ({ mode, initialData, onSave, onClose, error }) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+const [localError, setLocalError] = useState('');
   const handleSave = () => {
+    if (!form.date) {
+    setLocalError('Please select a date before saving.');
+    return;
+  }
+    setLocalError('');  
     onSave(form);
   };
 
@@ -85,7 +91,9 @@ const SalesModal = ({ mode, initialData, onSave, onClose, error }) => {
             </div>
           ))}
         </div>
-        {error && <div className="modal-error">{error}</div>}
+        {(error || localError) && (
+       <div className="modal-error">{localError || error}</div>
+        )}
         <div className="modal-actions">
           <button className="modal-btn-cancel" onClick={onClose}>
             Cancel

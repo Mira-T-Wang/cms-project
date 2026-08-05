@@ -17,6 +17,9 @@ const login = async (req, res) => {
       return res.status(401).json({ error: 'Invalid username or password' });
     }
 
+//console.log('DB password hash:', user.password);
+//console.log('Starts with $2:', user.password.startsWith('$2'));
+
     // Check password — bcrypt for new users, MD5 for legacy users
 let isMatch = false;
 if (user.password.startsWith('$2')) {
@@ -32,6 +35,13 @@ if (user.password.startsWith('$2')) {
     console.log(`Password upgraded to bcrypt for user: ${user.username}`);
   }
 }
+
+if (!isMatch) {
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+
+//console.log('Password being compared:', password);
+//console.log('isMatch result:', isMatch);
 
     // Create JWT token
     const token = jwt.sign(

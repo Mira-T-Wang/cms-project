@@ -13,8 +13,14 @@ const getPaginated = async (req, res) => {
 };
 const create = async (req, res) => {
   try {
-    const plainDate = req.body.date.split('T')[0];
-    
+    const plainDate = req.body.date ? req.body.date.split('T')[0] : null;
+
+    // Check if date is in input
+    if (!plainDate) {
+      return res.status(400).json({ error: 'Date is required.' });
+    }
+
+    // Check for duplicate date
     const exists = await SaleStatistics.dateExists(plainDate);
     if (exists) {
       return res.status(400).json({ error: `A record for ${plainDate} already exists.` });

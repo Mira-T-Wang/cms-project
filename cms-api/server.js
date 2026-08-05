@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
 const pool = require('./src/config/database');
@@ -13,20 +14,6 @@ app.use(cors({
 
 app.use(express.json());
 
-app.get('/api/test', (req, res) => {
-  res.json({ message: 'CMS API is running!', status: 'OK' });
-});
-
-app.use('/api/auth', require('./src/routes/auth'));
-app.use('/api/sales', require('./src/routes/sales'));
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`\n Server running on http://localhost:${PORT}`);
-  console.log(` Test it: http://localhost:${PORT}/api/test\n`);
-});
-const rateLimit = require('express-rate-limit');
-
-// Limit login attempts — 5 tries per 15 minutes
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 5,
@@ -35,4 +22,17 @@ const loginLimiter = rateLimit({
   legacyHeaders: false
 });
 
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'CMS API is running!', status: 'OK' });
+});
+
+// Rate limiter 
 app.use('/api/auth/login', loginLimiter);
+app.use('/api/auth', require('./src/routes/auth'));
+app.use('/api/sales', require('./src/routes/sales'));
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`\n Server running on http://localhost:${PORT}`);
+  console.log(` Test it: http://localhost:${PORT}/api/test\n`);
+});
