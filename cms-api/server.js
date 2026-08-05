@@ -15,7 +15,7 @@ app.use(cors({
 app.use(express.json());
 
 const loginLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
+  windowMs: 1 * 60 * 1000,
   max: 5,
   message: { error: 'Too many login attempts. Please try again after 15 minutes.' },
   standardHeaders: true,
