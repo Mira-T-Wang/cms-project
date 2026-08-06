@@ -17,7 +17,7 @@ app.use(express.json());
 const loginLimiter = rateLimit({
   windowMs: 1 * 60 * 1000,
   max: 5,
-  message: { error: 'Too many login attempts. Please try again after 15 minutes.' },
+  message: { error: 'Too many login attempts. Please try again after 1 minute.' },
   standardHeaders: true,
   legacyHeaders: false
 });
