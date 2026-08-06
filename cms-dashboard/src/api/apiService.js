@@ -28,7 +28,9 @@ export const salesAPI = {
   update: (id, data) =>
     apiClient.put(`/sales/${id}`, data),
   delete: (id) =>
-    apiClient.delete(`/sales/${id}`)
+    apiClient.delete(`/sales/${id}`),
+  getSummary: () =>
+    apiClient.get('/sales/summary')
 };
 
 export default apiClient;

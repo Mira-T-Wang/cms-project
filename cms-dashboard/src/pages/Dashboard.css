@@ -22,3 +22,35 @@
   color: #7a9cc6;
   font-size: 15px;
 }
+.chart-card {
+  background-color: #0d1b3e;
+  border: 1px solid #1e3a6e;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.chart-title {
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.chart-subtitle {
+  color: #7a9cc6;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.chart-loading {
+  color: #7a9cc6;
+  font-size: 14px;
+  text-align: center;
+  padding: 40px;
+}

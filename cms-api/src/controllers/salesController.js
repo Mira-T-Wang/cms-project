@@ -50,4 +50,13 @@ const remove = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-module.exports = { getPaginated, create, update, remove };
+const getSummary = async (req, res) => {
+  try {
+    const data = await SaleStatistics.getLast7Days();
+    res.json({ data });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = { getPaginated, create, update, remove, getSummary };

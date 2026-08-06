@@ -32,6 +32,19 @@ class SaleStatistics {
     };
   }
 
+  static async getLast7Days() {
+  const connection = await pool.getConnection();
+  const [rows] = await connection.execute(
+    `SELECT DATE_FORMAT(date, '%Y-%m-%d') as date, mpt, ooredoo, telenor, kbzpay
+     FROM sale_statistics
+     WHERE date >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+       AND date <= CURDATE()
+     ORDER BY date ASC`
+  );
+  connection.release();
+  return rows;
+  }
+
   static async dateExists(date) {
   const connection = await pool.getConnection();
   const [[{ count }]] = await connection.execute(
